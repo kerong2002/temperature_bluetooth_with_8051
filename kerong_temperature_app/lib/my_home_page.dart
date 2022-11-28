@@ -167,7 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 )
               ),
               onPressed: () async {
-                String text = 'on';
+                String text = 'o';
                 if(fan_open==false){
                   fan_open = true;
                 }
@@ -175,20 +175,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   fan_open = false;
                 }
                 setState(() => _isWatering = true);
-                print('kerong onPressed');
+
                 if (text.isNotEmpty) {
                   try {
                     connection!.output
-                        .add(Uint8List.fromList(utf8.encode("$text\r\n")));
+                        .add(Uint8List.fromList(utf8.encode(text)));
                     await connection!.output.allSent;
                   } finally {
-                    Future.delayed(const Duration(seconds: 3), () {
+                    Future.delayed(const Duration(seconds: 4), () {
                       setState(() => _isWatering = false);
                     });
                   }
                 }
               },
-              child: fan_open ? Text('Turn off the fan!') : Text('Turn on the fan!'),
+                child: fan_open ? Text('Turn off the fan!') : Text('Turn on the fan!'),
             ),
             const Spacer(),
             SizedBox(
@@ -210,17 +210,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     return const SizedBox.shrink();
                   }
 
-                  if (percentValue! > 0.7) {
-                    return Lottie.asset(
-                        'assets/lottie/62044-smart-flowerpot-full-of-water.json');
+                  if (percentValue! >= 0.3) {
+                    return Lottie.asset('assets/lottie/very_hot.json');
                   }
-                  else if (percentValue! < 0.2) {
-                    return Lottie.asset(
-                        'assets/lottie/62395-smart-flowerpot-need-water.json');
+                  else if (percentValue! >=0.2 && percentValue! <0.3) {
+                    return Lottie.asset('assets/lottie/sunny.json');
                   }
                   else {
-                    return Lottie.asset(
-                        'assets/lottie/61698-smart-flowerpot-sunbath.json');
+                    return Lottie.asset('assets/lottie/snow.json');
                   }
 
                 },
