@@ -1,0 +1,1647 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.0.1 #6083 (Dec 17 2010) (MINGW32)
+                              4 ; This file was generated Tue Nov 29 08:11:56 2022
+                              5 ;--------------------------------------------------------
+                              6 	.module hc_05
+                              7 	.optsdcc -mmcs51 --model-small
+                              8 	
+                              9 ;--------------------------------------------------------
+                             10 ; Public variables in this module
+                             11 ;--------------------------------------------------------
+                             12 	.globl _uart_ASCII
+                             13 	.globl _main
+                             14 	.globl _DHT11_Read
+                             15 	.globl _DHT11_Read_Bit
+                             16 	.globl _CY
+                             17 	.globl _AC
+                             18 	.globl _F0
+                             19 	.globl _RS1
+                             20 	.globl _RS0
+                             21 	.globl _OV
+                             22 	.globl _F1
+                             23 	.globl _P
+                             24 	.globl _PS
+                             25 	.globl _PT1
+                             26 	.globl _PX1
+                             27 	.globl _PT0
+                             28 	.globl _PX0
+                             29 	.globl _RD
+                             30 	.globl _WR
+                             31 	.globl _T1
+                             32 	.globl _T0
+                             33 	.globl _INT1
+                             34 	.globl _INT0
+                             35 	.globl _TXD
+                             36 	.globl _RXD
+                             37 	.globl _P3_7
+                             38 	.globl _P3_6
+                             39 	.globl _P3_5
+                             40 	.globl _P3_4
+                             41 	.globl _P3_3
+                             42 	.globl _P3_2
+                             43 	.globl _P3_1
+                             44 	.globl _P3_0
+                             45 	.globl _EA
+                             46 	.globl _ES
+                             47 	.globl _ET1
+                             48 	.globl _EX1
+                             49 	.globl _ET0
+                             50 	.globl _EX0
+                             51 	.globl _P2_7
+                             52 	.globl _P2_6
+                             53 	.globl _P2_5
+                             54 	.globl _P2_4
+                             55 	.globl _P2_3
+                             56 	.globl _P2_2
+                             57 	.globl _P2_1
+                             58 	.globl _P2_0
+                             59 	.globl _SM0
+                             60 	.globl _SM1
+                             61 	.globl _SM2
+                             62 	.globl _REN
+                             63 	.globl _TB8
+                             64 	.globl _RB8
+                             65 	.globl _TI
+                             66 	.globl _RI
+                             67 	.globl _P1_7
+                             68 	.globl _P1_6
+                             69 	.globl _P1_5
+                             70 	.globl _P1_4
+                             71 	.globl _P1_3
+                             72 	.globl _P1_2
+                             73 	.globl _P1_1
+                             74 	.globl _P1_0
+                             75 	.globl _TF1
+                             76 	.globl _TR1
+                             77 	.globl _TF0
+                             78 	.globl _TR0
+                             79 	.globl _IE1
+                             80 	.globl _IT1
+                             81 	.globl _IE0
+                             82 	.globl _IT0
+                             83 	.globl _P0_7
+                             84 	.globl _P0_6
+                             85 	.globl _P0_5
+                             86 	.globl _P0_4
+                             87 	.globl _P0_3
+                             88 	.globl _P0_2
+                             89 	.globl _P0_1
+                             90 	.globl _P0_0
+                             91 	.globl _B
+                             92 	.globl _ACC
+                             93 	.globl _PSW
+                             94 	.globl _IP
+                             95 	.globl _P3
+                             96 	.globl _IE
+                             97 	.globl _P2
+                             98 	.globl _SBUF
+                             99 	.globl _SCON
+                            100 	.globl _P1
+                            101 	.globl _TH1
+                            102 	.globl _TH0
+                            103 	.globl _TL1
+                            104 	.globl _TL0
+                            105 	.globl _TMOD
+                            106 	.globl _TCON
+                            107 	.globl _PCON
+                            108 	.globl _DPH
+                            109 	.globl _DPL
+                            110 	.globl _SP
+                            111 	.globl _P0
+                            112 	.globl _str
+                            113 	.globl _state
+                            114 	.globl _uart_initialize
+                            115 	.globl _uart_put_char
+                            116 	.globl _uart_get_char
+                            117 	.globl _uart_get_char_echo
+                            118 	.globl _uart_put_string
+                            119 	.globl _uart_get_string
+                            120 	.globl _uart_i2s
+                            121 	.globl _uart_s2i
+                            122 	.globl _uart_put_integer
+                            123 	.globl _uart_get_integer
+                            124 	.globl _uart_put_byte
+                            125 	.globl _uart_put_word
+                            126 	.globl _UART_ISR
+                            127 ;--------------------------------------------------------
+                            128 ; special function registers
+                            129 ;--------------------------------------------------------
+                            130 	.area RSEG    (ABS,DATA)
+   0000                     131 	.org 0x0000
+                    0080    132 _P0	=	0x0080
+                    0081    133 _SP	=	0x0081
+                    0082    134 _DPL	=	0x0082
+                    0083    135 _DPH	=	0x0083
+                    0087    136 _PCON	=	0x0087
+                    0088    137 _TCON	=	0x0088
+                    0089    138 _TMOD	=	0x0089
+                    008A    139 _TL0	=	0x008a
+                    008B    140 _TL1	=	0x008b
+                    008C    141 _TH0	=	0x008c
+                    008D    142 _TH1	=	0x008d
+                    0090    143 _P1	=	0x0090
+                    0098    144 _SCON	=	0x0098
+                    0099    145 _SBUF	=	0x0099
+                    00A0    146 _P2	=	0x00a0
+                    00A8    147 _IE	=	0x00a8
+                    00B0    148 _P3	=	0x00b0
+                    00B8    149 _IP	=	0x00b8
+                    00D0    150 _PSW	=	0x00d0
+                    00E0    151 _ACC	=	0x00e0
+                    00F0    152 _B	=	0x00f0
+                            153 ;--------------------------------------------------------
+                            154 ; special function bits
+                            155 ;--------------------------------------------------------
+                            156 	.area RSEG    (ABS,DATA)
+   0000                     157 	.org 0x0000
+                    0080    158 _P0_0	=	0x0080
+                    0081    159 _P0_1	=	0x0081
+                    0082    160 _P0_2	=	0x0082
+                    0083    161 _P0_3	=	0x0083
+                    0084    162 _P0_4	=	0x0084
+                    0085    163 _P0_5	=	0x0085
+                    0086    164 _P0_6	=	0x0086
+                    0087    165 _P0_7	=	0x0087
+                    0088    166 _IT0	=	0x0088
+                    0089    167 _IE0	=	0x0089
+                    008A    168 _IT1	=	0x008a
+                    008B    169 _IE1	=	0x008b
+                    008C    170 _TR0	=	0x008c
+                    008D    171 _TF0	=	0x008d
+                    008E    172 _TR1	=	0x008e
+                    008F    173 _TF1	=	0x008f
+                    0090    174 _P1_0	=	0x0090
+                    0091    175 _P1_1	=	0x0091
+                    0092    176 _P1_2	=	0x0092
+                    0093    177 _P1_3	=	0x0093
+                    0094    178 _P1_4	=	0x0094
+                    0095    179 _P1_5	=	0x0095
+                    0096    180 _P1_6	=	0x0096
+                    0097    181 _P1_7	=	0x0097
+                    0098    182 _RI	=	0x0098
+                    0099    183 _TI	=	0x0099
+                    009A    184 _RB8	=	0x009a
+                    009B    185 _TB8	=	0x009b
+                    009C    186 _REN	=	0x009c
+                    009D    187 _SM2	=	0x009d
+                    009E    188 _SM1	=	0x009e
+                    009F    189 _SM0	=	0x009f
+                    00A0    190 _P2_0	=	0x00a0
+                    00A1    191 _P2_1	=	0x00a1
+                    00A2    192 _P2_2	=	0x00a2
+                    00A3    193 _P2_3	=	0x00a3
+                    00A4    194 _P2_4	=	0x00a4
+                    00A5    195 _P2_5	=	0x00a5
+                    00A6    196 _P2_6	=	0x00a6
+                    00A7    197 _P2_7	=	0x00a7
+                    00A8    198 _EX0	=	0x00a8
+                    00A9    199 _ET0	=	0x00a9
+                    00AA    200 _EX1	=	0x00aa
+                    00AB    201 _ET1	=	0x00ab
+                    00AC    202 _ES	=	0x00ac
+                    00AF    203 _EA	=	0x00af
+                    00B0    204 _P3_0	=	0x00b0
+                    00B1    205 _P3_1	=	0x00b1
+                    00B2    206 _P3_2	=	0x00b2
+                    00B3    207 _P3_3	=	0x00b3
+                    00B4    208 _P3_4	=	0x00b4
+                    00B5    209 _P3_5	=	0x00b5
+                    00B6    210 _P3_6	=	0x00b6
+                    00B7    211 _P3_7	=	0x00b7
+                    00B0    212 _RXD	=	0x00b0
+                    00B1    213 _TXD	=	0x00b1
+                    00B2    214 _INT0	=	0x00b2
+                    00B3    215 _INT1	=	0x00b3
+                    00B4    216 _T0	=	0x00b4
+                    00B5    217 _T1	=	0x00b5
+                    00B6    218 _WR	=	0x00b6
+                    00B7    219 _RD	=	0x00b7
+                    00B8    220 _PX0	=	0x00b8
+                    00B9    221 _PT0	=	0x00b9
+                    00BA    222 _PX1	=	0x00ba
+                    00BB    223 _PT1	=	0x00bb
+                    00BC    224 _PS	=	0x00bc
+                    00D0    225 _P	=	0x00d0
+                    00D1    226 _F1	=	0x00d1
+                    00D2    227 _OV	=	0x00d2
+                    00D3    228 _RS0	=	0x00d3
+                    00D4    229 _RS1	=	0x00d4
+                    00D5    230 _F0	=	0x00d5
+                    00D6    231 _AC	=	0x00d6
+                    00D7    232 _CY	=	0x00d7
+                            233 ;--------------------------------------------------------
+                            234 ; overlayable register banks
+                            235 ;--------------------------------------------------------
+                            236 	.area REG_BANK_0	(REL,OVR,DATA)
+   0000                     237 	.ds 8
+                            238 ;--------------------------------------------------------
+                            239 ; internal ram data
+                            240 ;--------------------------------------------------------
+                            241 	.area DSEG    (DATA)
+   0008                     242 _state::
+   0008                     243 	.ds 2
+   000A                     244 _str::
+   000A                     245 	.ds 30
+                            246 ;--------------------------------------------------------
+                            247 ; overlayable items in internal ram 
+                            248 ;--------------------------------------------------------
+                            249 	.area OSEG    (OVR,DATA)
+                            250 ;--------------------------------------------------------
+                            251 ; Stack segment in internal ram 
+                            252 ;--------------------------------------------------------
+                            253 	.area	SSEG	(DATA)
+   0029                     254 __start__stack:
+   0029                     255 	.ds	1
+                            256 
+                            257 ;--------------------------------------------------------
+                            258 ; indirectly addressable internal ram data
+                            259 ;--------------------------------------------------------
+                            260 	.area ISEG    (DATA)
+                            261 ;--------------------------------------------------------
+                            262 ; absolute internal ram data
+                            263 ;--------------------------------------------------------
+                            264 	.area IABS    (ABS,DATA)
+                            265 	.area IABS    (ABS,DATA)
+                            266 ;--------------------------------------------------------
+                            267 ; bit data
+                            268 ;--------------------------------------------------------
+                            269 	.area BSEG    (BIT)
+                            270 ;--------------------------------------------------------
+                            271 ; paged external ram data
+                            272 ;--------------------------------------------------------
+                            273 	.area PSEG    (PAG,XDATA)
+                            274 ;--------------------------------------------------------
+                            275 ; external ram data
+                            276 ;--------------------------------------------------------
+                            277 	.area XSEG    (XDATA)
+                            278 ;--------------------------------------------------------
+                            279 ; absolute external ram data
+                            280 ;--------------------------------------------------------
+                            281 	.area XABS    (ABS,XDATA)
+                            282 ;--------------------------------------------------------
+                            283 ; external initialized ram data
+                            284 ;--------------------------------------------------------
+                            285 	.area XISEG   (XDATA)
+                            286 	.area HOME    (CODE)
+                            287 	.area GSINIT0 (CODE)
+                            288 	.area GSINIT1 (CODE)
+                            289 	.area GSINIT2 (CODE)
+                            290 	.area GSINIT3 (CODE)
+                            291 	.area GSINIT4 (CODE)
+                            292 	.area GSINIT5 (CODE)
+                            293 	.area GSINIT  (CODE)
+                            294 	.area GSFINAL (CODE)
+                            295 	.area CSEG    (CODE)
+                            296 ;--------------------------------------------------------
+                            297 ; interrupt vector 
+                            298 ;--------------------------------------------------------
+                            299 	.area HOME    (CODE)
+   0000                     300 __interrupt_vect:
+   0000 02 00 2B            301 	ljmp	__sdcc_gsinit_startup
+   0003 32                  302 	reti
+   0004                     303 	.ds	7
+   000B 32                  304 	reti
+   000C                     305 	.ds	7
+   0013 32                  306 	reti
+   0014                     307 	.ds	7
+   001B 32                  308 	reti
+   001C                     309 	.ds	7
+   0023 02 06 BB            310 	ljmp	_UART_ISR
+                            311 ;--------------------------------------------------------
+                            312 ; global & static initialisations
+                            313 ;--------------------------------------------------------
+                            314 	.area HOME    (CODE)
+                            315 	.area GSINIT  (CODE)
+                            316 	.area GSFINAL (CODE)
+                            317 	.area GSINIT  (CODE)
+                            318 	.globl __sdcc_gsinit_startup
+                            319 	.globl __sdcc_program_startup
+                            320 	.globl __start__stack
+                            321 	.globl __mcs51_genXINIT
+                            322 	.globl __mcs51_genXRAMCLEAR
+                            323 	.globl __mcs51_genRAMCLEAR
+                            324 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:9: int state=0;
+   0084 E4                  325 	clr	a
+   0085 F5 08               326 	mov	_state,a
+   0087 F5 09               327 	mov	(_state + 1),a
+                            328 	.area GSFINAL (CODE)
+   0089 02 00 26            329 	ljmp	__sdcc_program_startup
+                            330 ;--------------------------------------------------------
+                            331 ; Home
+                            332 ;--------------------------------------------------------
+                            333 	.area HOME    (CODE)
+                            334 	.area HOME    (CODE)
+   0026                     335 __sdcc_program_startup:
+   0026 12 05 4C            336 	lcall	_main
+                            337 ;	return from main will lock up
+   0029 80 FE               338 	sjmp .
+                            339 ;--------------------------------------------------------
+                            340 ; code
+                            341 ;--------------------------------------------------------
+                            342 	.area CSEG    (CODE)
+                            343 ;------------------------------------------------------------
+                            344 ;Allocation info for local variables in function 'uart_initialize'
+                            345 ;------------------------------------------------------------
+                            346 ;------------------------------------------------------------
+                            347 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:21: void uart_initialize(void)
+                            348 ;	-----------------------------------------
+                            349 ;	 function uart_initialize
+                            350 ;	-----------------------------------------
+   008C                     351 _uart_initialize:
+                    0002    352 	ar2 = 0x02
+                    0003    353 	ar3 = 0x03
+                    0004    354 	ar4 = 0x04
+                    0005    355 	ar5 = 0x05
+                    0006    356 	ar6 = 0x06
+                    0007    357 	ar7 = 0x07
+                    0000    358 	ar0 = 0x00
+                    0001    359 	ar1 = 0x01
+                            360 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:23: PCON&=0x7F;		// Clear SMOD of PCON, No Double Baud Rate
+   008C 53 87 7F            361 	anl	_PCON,#0x7F
+                            362 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:24: TMOD&=0x2F;TMOD|=0x20;	// Set Timer1 to Mode 2 (8-bit auto reload) for Baud Rate Generation
+   008F 53 89 2F            363 	anl	_TMOD,#0x2F
+   0092 43 89 20            364 	orl	_TMOD,#0x20
+                            365 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:25: TH1=0xFD;		// Set Baud Rate to 9600 bps for 11.0592M Hz
+   0095 75 8D FD            366 	mov	_TH1,#0xFD
+                            367 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:26: SM0=0;SM1=1;		// Set UART to Mode 1 (8-bit UART)
+   0098 C2 9F               368 	clr	_SM0
+   009A D2 9E               369 	setb	_SM1
+                            370 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:27: REN=1;			// Set REN of SCON to Enable UART Receive
+   009C D2 9C               371 	setb	_REN
+                            372 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:28: TR1=1;			// Set TR1 of TCON to Start Timer1
+   009E D2 8E               373 	setb	_TR1
+                            374 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:29: TI=0;RI=0;		// Clear TI/RI of SCON to Get Ready to Send/Receive
+   00A0 C2 99               375 	clr	_TI
+   00A2 C2 98               376 	clr	_RI
+   00A4 22                  377 	ret
+                            378 ;------------------------------------------------------------
+                            379 ;Allocation info for local variables in function 'uart_put_char'
+                            380 ;------------------------------------------------------------
+                            381 ;c                         Allocated to registers 
+                            382 ;------------------------------------------------------------
+                            383 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:32: void uart_put_char(char c)	// Put Character to UART
+                            384 ;	-----------------------------------------
+                            385 ;	 function uart_put_char
+                            386 ;	-----------------------------------------
+   00A5                     387 _uart_put_char:
+   00A5 85 82 99            388 	mov	_SBUF,dpl
+                            389 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:35: while(TI==0);TI=0;
+   00A8                     390 00101$:
+   00A8 10 99 02            391 	jbc	_TI,00108$
+   00AB 80 FB               392 	sjmp	00101$
+   00AD                     393 00108$:
+   00AD 22                  394 	ret
+                            395 ;------------------------------------------------------------
+                            396 ;Allocation info for local variables in function 'uart_get_char'
+                            397 ;------------------------------------------------------------
+                            398 ;------------------------------------------------------------
+                            399 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:38: char uart_get_char(void)	// Get Character from UART
+                            400 ;	-----------------------------------------
+                            401 ;	 function uart_get_char
+                            402 ;	-----------------------------------------
+   00AE                     403 _uart_get_char:
+                            404 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:40: while(RI==0);RI=0;
+   00AE                     405 00101$:
+   00AE 10 98 02            406 	jbc	_RI,00108$
+   00B1 80 FB               407 	sjmp	00101$
+   00B3                     408 00108$:
+                            409 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:41: return SBUF;
+   00B3 85 99 82            410 	mov	dpl,_SBUF
+   00B6 22                  411 	ret
+                            412 ;------------------------------------------------------------
+                            413 ;Allocation info for local variables in function 'uart_get_char_echo'
+                            414 ;------------------------------------------------------------
+                            415 ;------------------------------------------------------------
+                            416 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:44: char uart_get_char_echo(void)	// Get Character from UART with Echo, Require uart_put_char()
+                            417 ;	-----------------------------------------
+                            418 ;	 function uart_get_char_echo
+                            419 ;	-----------------------------------------
+   00B7                     420 _uart_get_char_echo:
+                            421 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:46: while(RI==0);RI=0;
+   00B7                     422 00101$:
+   00B7 10 98 02            423 	jbc	_RI,00108$
+   00BA 80 FB               424 	sjmp	00101$
+   00BC                     425 00108$:
+                            426 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:47: uart_put_char(SBUF);
+   00BC 85 99 82            427 	mov	dpl,_SBUF
+   00BF 12 00 A5            428 	lcall	_uart_put_char
+                            429 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:48: return SBUF;
+   00C2 85 99 82            430 	mov	dpl,_SBUF
+   00C5 22                  431 	ret
+                            432 ;------------------------------------------------------------
+                            433 ;Allocation info for local variables in function 'uart_put_string'
+                            434 ;------------------------------------------------------------
+                            435 ;s                         Allocated to registers r2 r3 r4 
+                            436 ;------------------------------------------------------------
+                            437 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:51: void uart_put_string(char *s)	// Put String to UART, Require uart_put_char()
+                            438 ;	-----------------------------------------
+                            439 ;	 function uart_put_string
+                            440 ;	-----------------------------------------
+   00C6                     441 _uart_put_string:
+   00C6 AA 82               442 	mov	r2,dpl
+   00C8 AB 83               443 	mov	r3,dph
+   00CA AC F0               444 	mov	r4,b
+                            445 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:53: while(*s!=0){uart_put_char(*s);s++;}
+   00CC                     446 00101$:
+   00CC 8A 82               447 	mov	dpl,r2
+   00CE 8B 83               448 	mov	dph,r3
+   00D0 8C F0               449 	mov	b,r4
+   00D2 12 07 3B            450 	lcall	__gptrget
+   00D5 FD                  451 	mov	r5,a
+   00D6 60 18               452 	jz	00104$
+   00D8 8D 82               453 	mov	dpl,r5
+   00DA C0 02               454 	push	ar2
+   00DC C0 03               455 	push	ar3
+   00DE C0 04               456 	push	ar4
+   00E0 12 00 A5            457 	lcall	_uart_put_char
+   00E3 D0 04               458 	pop	ar4
+   00E5 D0 03               459 	pop	ar3
+   00E7 D0 02               460 	pop	ar2
+   00E9 0A                  461 	inc	r2
+   00EA BA 00 DF            462 	cjne	r2,#0x00,00101$
+   00ED 0B                  463 	inc	r3
+   00EE 80 DC               464 	sjmp	00101$
+   00F0                     465 00104$:
+   00F0 22                  466 	ret
+                            467 ;------------------------------------------------------------
+                            468 ;Allocation info for local variables in function 'uart_get_string'
+                            469 ;------------------------------------------------------------
+                            470 ;s                         Allocated to registers r2 r3 r4 
+                            471 ;------------------------------------------------------------
+                            472 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:56: void uart_get_string(char *s)	// Get String from UART, Require uart_get_char_echo()
+                            473 ;	-----------------------------------------
+                            474 ;	 function uart_get_string
+                            475 ;	-----------------------------------------
+   00F1                     476 _uart_get_string:
+   00F1 AA 82               477 	mov	r2,dpl
+   00F3 AB 83               478 	mov	r3,dph
+   00F5 AC F0               479 	mov	r4,b
+                            480 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:58: while(((*s)=uart_get_char())!=13)s++;
+   00F7                     481 00101$:
+   00F7 C0 02               482 	push	ar2
+   00F9 C0 03               483 	push	ar3
+   00FB C0 04               484 	push	ar4
+   00FD 12 00 AE            485 	lcall	_uart_get_char
+   0100 AD 82               486 	mov	r5,dpl
+   0102 D0 04               487 	pop	ar4
+   0104 D0 03               488 	pop	ar3
+   0106 D0 02               489 	pop	ar2
+   0108 8A 82               490 	mov	dpl,r2
+   010A 8B 83               491 	mov	dph,r3
+   010C 8C F0               492 	mov	b,r4
+   010E ED                  493 	mov	a,r5
+   010F 12 07 00            494 	lcall	__gptrput
+   0112 BD 0D 02            495 	cjne	r5,#0x0D,00109$
+   0115 80 07               496 	sjmp	00103$
+   0117                     497 00109$:
+   0117 0A                  498 	inc	r2
+   0118 BA 00 DC            499 	cjne	r2,#0x00,00101$
+   011B 0B                  500 	inc	r3
+   011C 80 D9               501 	sjmp	00101$
+   011E                     502 00103$:
+                            503 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:59: *s=0;
+   011E 8A 82               504 	mov	dpl,r2
+   0120 8B 83               505 	mov	dph,r3
+   0122 8C F0               506 	mov	b,r4
+   0124 E4                  507 	clr	a
+   0125 02 07 00            508 	ljmp	__gptrput
+                            509 ;------------------------------------------------------------
+                            510 ;Allocation info for local variables in function 'uart_i2s'
+                            511 ;------------------------------------------------------------
+                            512 ;s                         Allocated to stack - offset -5
+                            513 ;i                         Allocated to stack - offset 1
+                            514 ;sign                      Allocated to stack - offset 3
+                            515 ;len                       Allocated to registers r6 
+                            516 ;p                         Allocated to stack - offset 4
+                            517 ;sloc0                     Allocated to stack - offset 8
+                            518 ;sloc1                     Allocated to stack - offset 7
+                            519 ;sloc2                     Allocated to stack - offset 8
+                            520 ;------------------------------------------------------------
+                            521 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:62: void uart_i2s(int i,char *s)	// Convert Integer to String
+                            522 ;	-----------------------------------------
+                            523 ;	 function uart_i2s
+                            524 ;	-----------------------------------------
+   0128                     525 _uart_i2s:
+   0128 C0 28               526 	push	_bp
+   012A 85 81 28            527 	mov	_bp,sp
+   012D C0 82               528 	push	dpl
+   012F C0 83               529 	push	dph
+   0131 E5 81               530 	mov	a,sp
+   0133 24 0A               531 	add	a,#0x0a
+   0135 F5 81               532 	mov	sp,a
+                            533 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:65: sign='+';len=0;p=s;
+   0137 E5 28               534 	mov	a,_bp
+   0139 24 03               535 	add	a,#0x03
+   013B F8                  536 	mov	r0,a
+   013C 76 2B               537 	mov	@r0,#0x2B
+   013E E5 28               538 	mov	a,_bp
+   0140 24 FB               539 	add	a,#0xfb
+   0142 F8                  540 	mov	r0,a
+   0143 E5 28               541 	mov	a,_bp
+   0145 24 04               542 	add	a,#0x04
+   0147 F9                  543 	mov	r1,a
+   0148 E6                  544 	mov	a,@r0
+   0149 F7                  545 	mov	@r1,a
+   014A 08                  546 	inc	r0
+   014B 09                  547 	inc	r1
+   014C E6                  548 	mov	a,@r0
+   014D F7                  549 	mov	@r1,a
+   014E 08                  550 	inc	r0
+   014F 09                  551 	inc	r1
+   0150 E6                  552 	mov	a,@r0
+   0151 F7                  553 	mov	@r1,a
+                            554 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:66: if(i<0){sign='-';i=-i;}
+   0152 A8 28               555 	mov	r0,_bp
+   0154 08                  556 	inc	r0
+   0155 08                  557 	inc	r0
+   0156 E6                  558 	mov	a,@r0
+   0157 30 E7 12            559 	jnb	acc.7,00115$
+   015A E5 28               560 	mov	a,_bp
+   015C 24 03               561 	add	a,#0x03
+   015E F8                  562 	mov	r0,a
+   015F 76 2D               563 	mov	@r0,#0x2D
+   0161 A8 28               564 	mov	r0,_bp
+   0163 08                  565 	inc	r0
+   0164 C3                  566 	clr	c
+   0165 E4                  567 	clr	a
+   0166 96                  568 	subb	a,@r0
+   0167 F6                  569 	mov	@r0,a
+   0168 08                  570 	inc	r0
+   0169 E4                  571 	clr	a
+   016A 96                  572 	subb	a,@r0
+   016B F6                  573 	mov	@r0,a
+                            574 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:67: do{*s=(i%10)+'0';s++;len++;i/=10;}while(i!=0);
+   016C                     575 00115$:
+   016C E5 28               576 	mov	a,_bp
+   016E 24 04               577 	add	a,#0x04
+   0170 F8                  578 	mov	r0,a
+   0171 86 04               579 	mov	ar4,@r0
+   0173 08                  580 	inc	r0
+   0174 86 02               581 	mov	ar2,@r0
+   0176 08                  582 	inc	r0
+   0177 86 03               583 	mov	ar3,@r0
+   0179 7D 00               584 	mov	r5,#0x00
+   017B                     585 00103$:
+   017B C0 02               586 	push	ar2
+   017D C0 03               587 	push	ar3
+   017F C0 04               588 	push	ar4
+   0181 C0 05               589 	push	ar5
+   0183 74 0A               590 	mov	a,#0x0A
+   0185 C0 E0               591 	push	acc
+   0187 E4                  592 	clr	a
+   0188 C0 E0               593 	push	acc
+   018A A8 28               594 	mov	r0,_bp
+   018C 08                  595 	inc	r0
+   018D 86 82               596 	mov	dpl,@r0
+   018F 08                  597 	inc	r0
+   0190 86 83               598 	mov	dph,@r0
+   0192 12 07 57            599 	lcall	__modsint
+   0195 AE 82               600 	mov	r6,dpl
+   0197 15 81               601 	dec	sp
+   0199 15 81               602 	dec	sp
+   019B D0 05               603 	pop	ar5
+   019D D0 04               604 	pop	ar4
+   019F D0 03               605 	pop	ar3
+   01A1 D0 02               606 	pop	ar2
+   01A3 74 30               607 	mov	a,#0x30
+   01A5 2E                  608 	add	a,r6
+   01A6 8C 82               609 	mov	dpl,r4
+   01A8 8A 83               610 	mov	dph,r2
+   01AA 8B F0               611 	mov	b,r3
+   01AC 12 07 00            612 	lcall	__gptrput
+   01AF A3                  613 	inc	dptr
+   01B0 AC 82               614 	mov	r4,dpl
+   01B2 AA 83               615 	mov	r2,dph
+   01B4 0D                  616 	inc	r5
+   01B5 8D 06               617 	mov	ar6,r5
+   01B7 C0 02               618 	push	ar2
+   01B9 C0 03               619 	push	ar3
+   01BB C0 04               620 	push	ar4
+   01BD C0 05               621 	push	ar5
+   01BF 74 0A               622 	mov	a,#0x0A
+   01C1 C0 E0               623 	push	acc
+   01C3 E4                  624 	clr	a
+   01C4 C0 E0               625 	push	acc
+   01C6 A8 28               626 	mov	r0,_bp
+   01C8 08                  627 	inc	r0
+   01C9 86 82               628 	mov	dpl,@r0
+   01CB 08                  629 	inc	r0
+   01CC 86 83               630 	mov	dph,@r0
+   01CE 12 07 94            631 	lcall	__divsint
+   01D1 A8 28               632 	mov	r0,_bp
+   01D3 08                  633 	inc	r0
+   01D4 A6 82               634 	mov	@r0,dpl
+   01D6 08                  635 	inc	r0
+   01D7 A6 83               636 	mov	@r0,dph
+   01D9 15 81               637 	dec	sp
+   01DB 15 81               638 	dec	sp
+   01DD D0 05               639 	pop	ar5
+   01DF D0 04               640 	pop	ar4
+   01E1 D0 03               641 	pop	ar3
+   01E3 D0 02               642 	pop	ar2
+   01E5 A8 28               643 	mov	r0,_bp
+   01E7 08                  644 	inc	r0
+   01E8 E6                  645 	mov	a,@r0
+   01E9 08                  646 	inc	r0
+   01EA 46                  647 	orl	a,@r0
+   01EB 70 8E               648 	jnz	00103$
+                            649 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:68: if(sign=='-'){*s='-';s++;len++;}
+   01ED 8D 06               650 	mov	ar6,r5
+   01EF E5 28               651 	mov	a,_bp
+   01F1 24 03               652 	add	a,#0x03
+   01F3 F8                  653 	mov	r0,a
+   01F4 B6 2D 0E            654 	cjne	@r0,#0x2D,00119$
+   01F7 8C 82               655 	mov	dpl,r4
+   01F9 8A 83               656 	mov	dph,r2
+   01FB 8B F0               657 	mov	b,r3
+   01FD 74 2D               658 	mov	a,#0x2D
+   01FF 12 07 00            659 	lcall	__gptrput
+   0202 ED                  660 	mov	a,r5
+   0203 04                  661 	inc	a
+   0204 FE                  662 	mov	r6,a
+                            663 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:69: for(i=0;i<len/2;i++){p[len]=p[i];p[i]=p[len-1-i];p[len-1-i]=p[len];}
+   0205                     664 00119$:
+   0205 EE                  665 	mov	a,r6
+   0206 C3                  666 	clr	c
+   0207 13                  667 	rrc	a
+   0208 FA                  668 	mov	r2,a
+   0209 A8 28               669 	mov	r0,_bp
+   020B 08                  670 	inc	r0
+   020C E4                  671 	clr	a
+   020D F6                  672 	mov	@r0,a
+   020E 08                  673 	inc	r0
+   020F F6                  674 	mov	@r0,a
+   0210                     675 00108$:
+   0210 8A 05               676 	mov	ar5,r2
+   0212 7F 00               677 	mov	r7,#0x00
+   0214 A8 28               678 	mov	r0,_bp
+   0216 08                  679 	inc	r0
+   0217 C3                  680 	clr	c
+   0218 E6                  681 	mov	a,@r0
+   0219 9D                  682 	subb	a,r5
+   021A 08                  683 	inc	r0
+   021B E6                  684 	mov	a,@r0
+   021C 64 80               685 	xrl	a,#0x80
+   021E 8F F0               686 	mov	b,r7
+   0220 63 F0 80            687 	xrl	b,#0x80
+   0223 95 F0               688 	subb	a,b
+   0225 40 03               689 	jc	00126$
+   0227 02 02 E1            690 	ljmp	00111$
+   022A                     691 00126$:
+   022A C0 02               692 	push	ar2
+   022C E5 28               693 	mov	a,_bp
+   022E 24 04               694 	add	a,#0x04
+   0230 F8                  695 	mov	r0,a
+   0231 EE                  696 	mov	a,r6
+   0232 26                  697 	add	a,@r0
+   0233 FB                  698 	mov	r3,a
+   0234 E4                  699 	clr	a
+   0235 08                  700 	inc	r0
+   0236 36                  701 	addc	a,@r0
+   0237 FC                  702 	mov	r4,a
+   0238 08                  703 	inc	r0
+   0239 86 05               704 	mov	ar5,@r0
+   023B E5 28               705 	mov	a,_bp
+   023D 24 04               706 	add	a,#0x04
+   023F F8                  707 	mov	r0,a
+   0240 A9 28               708 	mov	r1,_bp
+   0242 09                  709 	inc	r1
+   0243 E7                  710 	mov	a,@r1
+   0244 26                  711 	add	a,@r0
+   0245 C0 E0               712 	push	acc
+   0247 09                  713 	inc	r1
+   0248 E7                  714 	mov	a,@r1
+   0249 08                  715 	inc	r0
+   024A 36                  716 	addc	a,@r0
+   024B C0 E0               717 	push	acc
+   024D 08                  718 	inc	r0
+   024E E6                  719 	mov	a,@r0
+   024F C0 E0               720 	push	acc
+   0251 E5 28               721 	mov	a,_bp
+   0253 24 0A               722 	add	a,#0x0a
+   0255 F8                  723 	mov	r0,a
+   0256 D0 E0               724 	pop	acc
+   0258 F6                  725 	mov	@r0,a
+   0259 18                  726 	dec	r0
+   025A D0 E0               727 	pop	acc
+   025C F6                  728 	mov	@r0,a
+   025D 18                  729 	dec	r0
+   025E D0 E0               730 	pop	acc
+   0260 F6                  731 	mov	@r0,a
+   0261 E5 28               732 	mov	a,_bp
+   0263 24 08               733 	add	a,#0x08
+   0265 F8                  734 	mov	r0,a
+   0266 86 82               735 	mov	dpl,@r0
+   0268 08                  736 	inc	r0
+   0269 86 83               737 	mov	dph,@r0
+   026B 08                  738 	inc	r0
+   026C 86 F0               739 	mov	b,@r0
+   026E E5 28               740 	mov	a,_bp
+   0270 24 07               741 	add	a,#0x07
+   0272 F9                  742 	mov	r1,a
+   0273 12 07 3B            743 	lcall	__gptrget
+   0276 F7                  744 	mov	@r1,a
+   0277 8B 82               745 	mov	dpl,r3
+   0279 8C 83               746 	mov	dph,r4
+   027B 8D F0               747 	mov	b,r5
+   027D E5 28               748 	mov	a,_bp
+   027F 24 07               749 	add	a,#0x07
+   0281 F8                  750 	mov	r0,a
+   0282 E6                  751 	mov	a,@r0
+   0283 12 07 00            752 	lcall	__gptrput
+   0286 8E 07               753 	mov	ar7,r6
+   0288 7D 00               754 	mov	r5,#0x00
+   028A 1F                  755 	dec	r7
+   028B BF FF 01            756 	cjne	r7,#0xff,00127$
+   028E 1D                  757 	dec	r5
+   028F                     758 00127$:
+   028F A8 28               759 	mov	r0,_bp
+   0291 08                  760 	inc	r0
+   0292 EF                  761 	mov	a,r7
+   0293 C3                  762 	clr	c
+   0294 96                  763 	subb	a,@r0
+   0295 FF                  764 	mov	r7,a
+   0296 ED                  765 	mov	a,r5
+   0297 08                  766 	inc	r0
+   0298 96                  767 	subb	a,@r0
+   0299 FD                  768 	mov	r5,a
+   029A E5 28               769 	mov	a,_bp
+   029C 24 04               770 	add	a,#0x04
+   029E F8                  771 	mov	r0,a
+   029F EF                  772 	mov	a,r7
+   02A0 26                  773 	add	a,@r0
+   02A1 FF                  774 	mov	r7,a
+   02A2 ED                  775 	mov	a,r5
+   02A3 08                  776 	inc	r0
+   02A4 36                  777 	addc	a,@r0
+   02A5 FD                  778 	mov	r5,a
+   02A6 08                  779 	inc	r0
+   02A7 86 02               780 	mov	ar2,@r0
+   02A9 8F 82               781 	mov	dpl,r7
+   02AB 8D 83               782 	mov	dph,r5
+   02AD 8A F0               783 	mov	b,r2
+   02AF 12 07 3B            784 	lcall	__gptrget
+   02B2 FB                  785 	mov	r3,a
+   02B3 E5 28               786 	mov	a,_bp
+   02B5 24 08               787 	add	a,#0x08
+   02B7 F8                  788 	mov	r0,a
+   02B8 86 82               789 	mov	dpl,@r0
+   02BA 08                  790 	inc	r0
+   02BB 86 83               791 	mov	dph,@r0
+   02BD 08                  792 	inc	r0
+   02BE 86 F0               793 	mov	b,@r0
+   02C0 EB                  794 	mov	a,r3
+   02C1 12 07 00            795 	lcall	__gptrput
+   02C4 8F 82               796 	mov	dpl,r7
+   02C6 8D 83               797 	mov	dph,r5
+   02C8 8A F0               798 	mov	b,r2
+   02CA E5 28               799 	mov	a,_bp
+   02CC 24 07               800 	add	a,#0x07
+   02CE F8                  801 	mov	r0,a
+   02CF E6                  802 	mov	a,@r0
+   02D0 12 07 00            803 	lcall	__gptrput
+   02D3 A8 28               804 	mov	r0,_bp
+   02D5 08                  805 	inc	r0
+   02D6 06                  806 	inc	@r0
+   02D7 B6 00 02            807 	cjne	@r0,#0x00,00128$
+   02DA 08                  808 	inc	r0
+   02DB 06                  809 	inc	@r0
+   02DC                     810 00128$:
+   02DC D0 02               811 	pop	ar2
+   02DE 02 02 10            812 	ljmp	00108$
+   02E1                     813 00111$:
+                            814 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:70: p[len]=0;
+   02E1 E5 28               815 	mov	a,_bp
+   02E3 24 04               816 	add	a,#0x04
+   02E5 F8                  817 	mov	r0,a
+   02E6 EE                  818 	mov	a,r6
+   02E7 26                  819 	add	a,@r0
+   02E8 FE                  820 	mov	r6,a
+   02E9 E4                  821 	clr	a
+   02EA 08                  822 	inc	r0
+   02EB 36                  823 	addc	a,@r0
+   02EC FA                  824 	mov	r2,a
+   02ED 08                  825 	inc	r0
+   02EE 86 03               826 	mov	ar3,@r0
+   02F0 8E 82               827 	mov	dpl,r6
+   02F2 8A 83               828 	mov	dph,r2
+   02F4 8B F0               829 	mov	b,r3
+   02F6 E4                  830 	clr	a
+   02F7 12 07 00            831 	lcall	__gptrput
+   02FA 85 28 81            832 	mov	sp,_bp
+   02FD D0 28               833 	pop	_bp
+   02FF 22                  834 	ret
+                            835 ;------------------------------------------------------------
+                            836 ;Allocation info for local variables in function 'uart_s2i'
+                            837 ;------------------------------------------------------------
+                            838 ;s                         Allocated to registers r2 r3 r4 
+                            839 ;i                         Allocated to registers r5 r6 
+                            840 ;sign                      Allocated to stack - offset 1
+                            841 ;sloc0                     Allocated to stack - offset 7
+                            842 ;sloc1                     Allocated to stack - offset 2
+                            843 ;------------------------------------------------------------
+                            844 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:73: int uart_s2i(char *s)	// Convert String to Integer
+                            845 ;	-----------------------------------------
+                            846 ;	 function uart_s2i
+                            847 ;	-----------------------------------------
+   0300                     848 _uart_s2i:
+   0300 C0 28               849 	push	_bp
+   0302 E5 81               850 	mov	a,sp
+   0304 F5 28               851 	mov	_bp,a
+   0306 24 04               852 	add	a,#0x04
+   0308 F5 81               853 	mov	sp,a
+   030A AA 82               854 	mov	r2,dpl
+   030C AB 83               855 	mov	r3,dph
+   030E AC F0               856 	mov	r4,b
+                            857 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:75: int i=0;char sign='+';
+   0310 7D 00               858 	mov	r5,#0x00
+   0312 7E 00               859 	mov	r6,#0x00
+   0314 A8 28               860 	mov	r0,_bp
+   0316 08                  861 	inc	r0
+   0317 76 2B               862 	mov	@r0,#0x2B
+                            863 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:76: if(*s=='-'){sign='-';s++;}
+   0319 8A 82               864 	mov	dpl,r2
+   031B 8B 83               865 	mov	dph,r3
+   031D 8C F0               866 	mov	b,r4
+   031F 12 07 3B            867 	lcall	__gptrget
+   0322 FF                  868 	mov	r7,a
+   0323 BF 2D 0A            869 	cjne	r7,#0x2D,00112$
+   0326 A8 28               870 	mov	r0,_bp
+   0328 08                  871 	inc	r0
+   0329 76 2D               872 	mov	@r0,#0x2D
+   032B 0A                  873 	inc	r2
+   032C BA 00 01            874 	cjne	r2,#0x00,00117$
+   032F 0B                  875 	inc	r3
+   0330                     876 00117$:
+                            877 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:77: while(*s!=0){i=i*10+(*s-'0');s++;}
+   0330                     878 00112$:
+   0330 A8 28               879 	mov	r0,_bp
+   0332 08                  880 	inc	r0
+   0333 08                  881 	inc	r0
+   0334 A6 02               882 	mov	@r0,ar2
+   0336 08                  883 	inc	r0
+   0337 A6 03               884 	mov	@r0,ar3
+   0339 08                  885 	inc	r0
+   033A A6 04               886 	mov	@r0,ar4
+   033C                     887 00103$:
+   033C A8 28               888 	mov	r0,_bp
+   033E 08                  889 	inc	r0
+   033F 08                  890 	inc	r0
+   0340 86 82               891 	mov	dpl,@r0
+   0342 08                  892 	inc	r0
+   0343 86 83               893 	mov	dph,@r0
+   0345 08                  894 	inc	r0
+   0346 86 F0               895 	mov	b,@r0
+   0348 12 07 3B            896 	lcall	__gptrget
+   034B FB                  897 	mov	r3,a
+   034C 60 39               898 	jz	00105$
+   034E C0 03               899 	push	ar3
+   0350 C0 05               900 	push	ar5
+   0352 C0 06               901 	push	ar6
+   0354 90 00 0A            902 	mov	dptr,#0x000A
+   0357 12 07 19            903 	lcall	__mulint
+   035A AF 82               904 	mov	r7,dpl
+   035C AA 83               905 	mov	r2,dph
+   035E 15 81               906 	dec	sp
+   0360 15 81               907 	dec	sp
+   0362 D0 03               908 	pop	ar3
+   0364 EB                  909 	mov	a,r3
+   0365 33                  910 	rlc	a
+   0366 95 E0               911 	subb	a,acc
+   0368 FC                  912 	mov	r4,a
+   0369 EB                  913 	mov	a,r3
+   036A 24 D0               914 	add	a,#0xd0
+   036C FB                  915 	mov	r3,a
+   036D EC                  916 	mov	a,r4
+   036E 34 FF               917 	addc	a,#0xff
+   0370 FC                  918 	mov	r4,a
+   0371 EB                  919 	mov	a,r3
+   0372 2F                  920 	add	a,r7
+   0373 FF                  921 	mov	r7,a
+   0374 EC                  922 	mov	a,r4
+   0375 3A                  923 	addc	a,r2
+   0376 FA                  924 	mov	r2,a
+   0377 8F 05               925 	mov	ar5,r7
+   0379 8A 06               926 	mov	ar6,r2
+   037B A8 28               927 	mov	r0,_bp
+   037D 08                  928 	inc	r0
+   037E 08                  929 	inc	r0
+   037F 06                  930 	inc	@r0
+   0380 B6 00 02            931 	cjne	@r0,#0x00,00119$
+   0383 08                  932 	inc	r0
+   0384 06                  933 	inc	@r0
+   0385                     934 00119$:
+   0385 80 B5               935 	sjmp	00103$
+   0387                     936 00105$:
+                            937 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:78: if(sign=='-')i=-i;
+   0387 A8 28               938 	mov	r0,_bp
+   0389 08                  939 	inc	r0
+   038A B6 2D 07            940 	cjne	@r0,#0x2D,00107$
+   038D C3                  941 	clr	c
+   038E E4                  942 	clr	a
+   038F 9D                  943 	subb	a,r5
+   0390 FD                  944 	mov	r5,a
+   0391 E4                  945 	clr	a
+   0392 9E                  946 	subb	a,r6
+   0393 FE                  947 	mov	r6,a
+   0394                     948 00107$:
+                            949 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:79: return i;
+   0394 8D 82               950 	mov	dpl,r5
+   0396 8E 83               951 	mov	dph,r6
+   0398 85 28 81            952 	mov	sp,_bp
+   039B D0 28               953 	pop	_bp
+   039D 22                  954 	ret
+                            955 ;------------------------------------------------------------
+                            956 ;Allocation info for local variables in function 'uart_put_integer'
+                            957 ;------------------------------------------------------------
+                            958 ;i                         Allocated to registers r2 r3 
+                            959 ;s                         Allocated to stack - offset 1
+                            960 ;------------------------------------------------------------
+                            961 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:82: void uart_put_integer(int i)	// Put Integer to UART, Require uart_i2s(),uart_put_string()
+                            962 ;	-----------------------------------------
+                            963 ;	 function uart_put_integer
+                            964 ;	-----------------------------------------
+   039E                     965 _uart_put_integer:
+   039E C0 28               966 	push	_bp
+   03A0 E5 81               967 	mov	a,sp
+   03A2 F5 28               968 	mov	_bp,a
+   03A4 24 07               969 	add	a,#0x07
+   03A6 F5 81               970 	mov	sp,a
+   03A8 AA 82               971 	mov	r2,dpl
+   03AA AB 83               972 	mov	r3,dph
+                            973 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:85: uart_i2s(i,s);uart_put_string(s);
+   03AC AC 28               974 	mov	r4,_bp
+   03AE 0C                  975 	inc	r4
+   03AF 8C 05               976 	mov	ar5,r4
+   03B1 7E 00               977 	mov	r6,#0x00
+   03B3 7F 40               978 	mov	r7,#0x40
+   03B5 C0 04               979 	push	ar4
+   03B7 C0 05               980 	push	ar5
+   03B9 C0 06               981 	push	ar6
+   03BB C0 07               982 	push	ar7
+   03BD 8A 82               983 	mov	dpl,r2
+   03BF 8B 83               984 	mov	dph,r3
+   03C1 12 01 28            985 	lcall	_uart_i2s
+   03C4 15 81               986 	dec	sp
+   03C6 15 81               987 	dec	sp
+   03C8 15 81               988 	dec	sp
+   03CA D0 04               989 	pop	ar4
+   03CC 7A 00               990 	mov	r2,#0x00
+   03CE 7B 40               991 	mov	r3,#0x40
+   03D0 8C 82               992 	mov	dpl,r4
+   03D2 8A 83               993 	mov	dph,r2
+   03D4 8B F0               994 	mov	b,r3
+   03D6 12 00 C6            995 	lcall	_uart_put_string
+   03D9 85 28 81            996 	mov	sp,_bp
+   03DC D0 28               997 	pop	_bp
+   03DE 22                  998 	ret
+                            999 ;------------------------------------------------------------
+                           1000 ;Allocation info for local variables in function 'uart_get_integer'
+                           1001 ;------------------------------------------------------------
+                           1002 ;s                         Allocated to stack - offset 1
+                           1003 ;------------------------------------------------------------
+                           1004 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:88: int uart_get_integer()		// Get Integer from UART, Require uart_get_string(),uart_s2i()
+                           1005 ;	-----------------------------------------
+                           1006 ;	 function uart_get_integer
+                           1007 ;	-----------------------------------------
+   03DF                    1008 _uart_get_integer:
+   03DF C0 28              1009 	push	_bp
+   03E1 E5 81              1010 	mov	a,sp
+   03E3 F5 28              1011 	mov	_bp,a
+   03E5 24 07              1012 	add	a,#0x07
+   03E7 F5 81              1013 	mov	sp,a
+                           1014 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:91: uart_get_string(s);
+   03E9 AA 28              1015 	mov	r2,_bp
+   03EB 0A                 1016 	inc	r2
+   03EC 8A 03              1017 	mov	ar3,r2
+   03EE 7C 00              1018 	mov	r4,#0x00
+   03F0 7D 40              1019 	mov	r5,#0x40
+   03F2 8B 82              1020 	mov	dpl,r3
+   03F4 8C 83              1021 	mov	dph,r4
+   03F6 8D F0              1022 	mov	b,r5
+   03F8 C0 02              1023 	push	ar2
+   03FA 12 00 F1           1024 	lcall	_uart_get_string
+   03FD D0 02              1025 	pop	ar2
+                           1026 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:92: return uart_s2i(s);
+   03FF 7B 00              1027 	mov	r3,#0x00
+   0401 7C 40              1028 	mov	r4,#0x40
+   0403 8A 82              1029 	mov	dpl,r2
+   0405 8B 83              1030 	mov	dph,r3
+   0407 8C F0              1031 	mov	b,r4
+   0409 12 03 00           1032 	lcall	_uart_s2i
+   040C 85 28 81           1033 	mov	sp,_bp
+   040F D0 28              1034 	pop	_bp
+   0411 22                 1035 	ret
+                           1036 ;------------------------------------------------------------
+                           1037 ;Allocation info for local variables in function 'uart_put_byte'
+                           1038 ;------------------------------------------------------------
+                           1039 ;byte_data                 Allocated to registers r2 
+                           1040 ;------------------------------------------------------------
+                           1041 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:95: void uart_put_byte(unsigned char byte_data)
+                           1042 ;	-----------------------------------------
+                           1043 ;	 function uart_put_byte
+                           1044 ;	-----------------------------------------
+   0412                    1045 _uart_put_byte:
+                           1046 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:97: uart_put_char(uart_ASCII[byte_data/16]);uart_put_char(uart_ASCII[byte_data%16]);
+   0412 E5 82              1047 	mov	a,dpl
+   0414 FA                 1048 	mov	r2,a
+   0415 C4                 1049 	swap	a
+   0416 54 0F              1050 	anl	a,#0x0f
+   0418 90 08 4B           1051 	mov	dptr,#_uart_ASCII
+   041B 93                 1052 	movc	a,@a+dptr
+   041C F5 82              1053 	mov	dpl,a
+   041E C0 02              1054 	push	ar2
+   0420 12 00 A5           1055 	lcall	_uart_put_char
+   0423 D0 02              1056 	pop	ar2
+   0425 74 0F              1057 	mov	a,#0x0F
+   0427 5A                 1058 	anl	a,r2
+   0428 90 08 4B           1059 	mov	dptr,#_uart_ASCII
+   042B 93                 1060 	movc	a,@a+dptr
+   042C F5 82              1061 	mov	dpl,a
+   042E 02 00 A5           1062 	ljmp	_uart_put_char
+                           1063 ;------------------------------------------------------------
+                           1064 ;Allocation info for local variables in function 'uart_put_word'
+                           1065 ;------------------------------------------------------------
+                           1066 ;word_data                 Allocated to registers r2 r3 
+                           1067 ;------------------------------------------------------------
+                           1068 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:100: void uart_put_word(unsigned int word_data)
+                           1069 ;	-----------------------------------------
+                           1070 ;	 function uart_put_word
+                           1071 ;	-----------------------------------------
+   0431                    1072 _uart_put_word:
+   0431 AA 82              1073 	mov	r2,dpl
+   0433 AB 83              1074 	mov	r3,dph
+                           1075 ;	C:\Users\User\Desktop\HC-05\8051\/uart.c:102: uart_put_byte(word_data/256);uart_put_byte(word_data%256);
+   0435 8B 04              1076 	mov	ar4,r3
+   0437 8C 82              1077 	mov	dpl,r4
+   0439 C0 02              1078 	push	ar2
+   043B C0 03              1079 	push	ar3
+   043D 12 04 12           1080 	lcall	_uart_put_byte
+   0440 D0 03              1081 	pop	ar3
+   0442 D0 02              1082 	pop	ar2
+   0444 8A 82              1083 	mov	dpl,r2
+   0446 02 04 12           1084 	ljmp	_uart_put_byte
+                           1085 ;------------------------------------------------------------
+                           1086 ;Allocation info for local variables in function 'DHT11_Read_Bit'
+                           1087 ;------------------------------------------------------------
+                           1088 ;------------------------------------------------------------
+                           1089 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:5: __bit DHT11_Read_Bit()
+                           1090 ;	-----------------------------------------
+                           1091 ;	 function DHT11_Read_Bit
+                           1092 ;	-----------------------------------------
+   0449                    1093 _DHT11_Read_Bit:
+                           1094 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:7: while(DHT11_DATA==0);
+   0449                    1095 00101$:
+   0449 30 80 FD           1096 	jnb	_P0_0,00101$
+                           1097 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:8: TL0=0;
+   044C 75 8A 00           1098 	mov	_TL0,#0x00
+                           1099 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:9: while(DHT11_DATA==1);
+   044F                    1100 00104$:
+   044F 20 80 FD           1101 	jb	_P0_0,00104$
+                           1102 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:10: if(TL0>50)
+   0452 74 32              1103 	mov	a,#0x32
+   0454 B5 8A 00           1104 	cjne	a,_TL0,00119$
+   0457                    1105 00119$:
+   0457 50 02              1106 	jnc	00108$
+                           1107 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:11: return 1;
+   0459 D3                 1108 	setb	c
+   045A 22                 1109 	ret
+   045B                    1110 00108$:
+                           1111 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:13: return 0;
+   045B C3                 1112 	clr	c
+   045C 22                 1113 	ret
+                           1114 ;------------------------------------------------------------
+                           1115 ;Allocation info for local variables in function 'DHT11_Read'
+                           1116 ;------------------------------------------------------------
+                           1117 ;Temperature               Allocated to stack - offset -5
+                           1118 ;Humidity                  Allocated to registers r2 r3 r4 
+                           1119 ;i                         Allocated to registers r6 
+                           1120 ;readings                  Allocated to stack - offset 1
+                           1121 ;------------------------------------------------------------
+                           1122 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:16: void DHT11_Read(unsigned char * Humidity,unsigned char * Temperature)
+                           1123 ;	-----------------------------------------
+                           1124 ;	 function DHT11_Read
+                           1125 ;	-----------------------------------------
+   045D                    1126 _DHT11_Read:
+   045D C0 28              1127 	push	_bp
+   045F E5 81              1128 	mov	a,sp
+   0461 F5 28              1129 	mov	_bp,a
+   0463 24 28              1130 	add	a,#0x28
+   0465 F5 81              1131 	mov	sp,a
+   0467 AA 82              1132 	mov	r2,dpl
+   0469 AB 83              1133 	mov	r3,dph
+   046B AC F0              1134 	mov	r4,b
+                           1135 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:21: TMOD&=0xF1;TMOD|=0x01;TR0=1;
+   046D 53 89 F1           1136 	anl	_TMOD,#0xF1
+   0470 43 89 01           1137 	orl	_TMOD,#0x01
+   0473 D2 8C              1138 	setb	_TR0
+                           1139 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:23: TH0=0;TL0=0;
+   0475 75 8C 00           1140 	mov	_TH0,#0x00
+   0478 75 8A 00           1141 	mov	_TL0,#0x00
+                           1142 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:24: DHT11_DATA=0;
+   047B C2 80              1143 	clr	_P0_0
+                           1144 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:25: while(TH0<75);
+   047D                    1145 00101$:
+   047D 74 B5              1146 	mov	a,#0x100 - 0x4B
+   047F 25 8C              1147 	add	a,_TH0
+   0481 50 FA              1148 	jnc	00101$
+                           1149 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:26: DHT11_DATA=1;
+   0483 D2 80              1150 	setb	_P0_0
+                           1151 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:28: while(DHT11_DATA==1);
+   0485                    1152 00104$:
+   0485 20 80 FD           1153 	jb	_P0_0,00104$
+                           1154 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:29: while(DHT11_DATA==0);
+   0488                    1155 00107$:
+   0488 30 80 FD           1156 	jnb	_P0_0,00107$
+                           1157 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:30: while(DHT11_DATA==1);
+   048B                    1158 00110$:
+   048B 20 80 FD           1159 	jb	_P0_0,00110$
+                           1160 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:32: for(i=0;i<40;i++)
+   048E AD 28              1161 	mov	r5,_bp
+   0490 0D                 1162 	inc	r5
+   0491 7E 00              1163 	mov	r6,#0x00
+   0493                    1164 00116$:
+   0493 BE 28 00           1165 	cjne	r6,#0x28,00151$
+   0496                    1166 00151$:
+   0496 50 24              1167 	jnc	00113$
+                           1168 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:33: readings[i]=DHT11_Read_Bit();
+   0498 EE                 1169 	mov	a,r6
+   0499 2D                 1170 	add	a,r5
+   049A F8                 1171 	mov	r0,a
+   049B C0 02              1172 	push	ar2
+   049D C0 03              1173 	push	ar3
+   049F C0 04              1174 	push	ar4
+   04A1 C0 05              1175 	push	ar5
+   04A3 C0 06              1176 	push	ar6
+   04A5 C0 00              1177 	push	ar0
+   04A7 12 04 49           1178 	lcall	_DHT11_Read_Bit
+   04AA E4                 1179 	clr	a
+   04AB 33                 1180 	rlc	a
+   04AC D0 00              1181 	pop	ar0
+   04AE D0 06              1182 	pop	ar6
+   04B0 D0 05              1183 	pop	ar5
+   04B2 D0 04              1184 	pop	ar4
+   04B4 D0 03              1185 	pop	ar3
+   04B6 D0 02              1186 	pop	ar2
+   04B8 F6                 1187 	mov	@r0,a
+                           1188 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:32: for(i=0;i<40;i++)
+   04B9 0E                 1189 	inc	r6
+                           1190 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:35: while(DHT11_DATA==0);
+   04BA 80 D7              1191 	sjmp	00116$
+   04BC                    1192 00113$:
+   04BC 30 80 FD           1193 	jnb	_P0_0,00113$
+                           1194 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:37: for(i=0,(*Humidity)=0;i<8;i++)
+   04BF 8A 82              1195 	mov	dpl,r2
+   04C1 8B 83              1196 	mov	dph,r3
+   04C3 8C F0              1197 	mov	b,r4
+   04C5 E4                 1198 	clr	a
+   04C6 12 07 00           1199 	lcall	__gptrput
+   04C9 7E 00              1200 	mov	r6,#0x00
+   04CB                    1201 00120$:
+   04CB BE 08 00           1202 	cjne	r6,#0x08,00154$
+   04CE                    1203 00154$:
+   04CE 50 2B              1204 	jnc	00123$
+                           1205 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:39: (*Humidity)*=2;
+   04D0 8A 82              1206 	mov	dpl,r2
+   04D2 8B 83              1207 	mov	dph,r3
+   04D4 8C F0              1208 	mov	b,r4
+   04D6 12 07 3B           1209 	lcall	__gptrget
+   04D9 25 E0              1210 	add	a,acc
+   04DB FF                 1211 	mov	r7,a
+   04DC 8A 82              1212 	mov	dpl,r2
+   04DE 8B 83              1213 	mov	dph,r3
+   04E0 8C F0              1214 	mov	b,r4
+   04E2 12 07 00           1215 	lcall	__gptrput
+                           1216 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:40: (*Humidity)+=readings[i];
+   04E5 EE                 1217 	mov	a,r6
+   04E6 2D                 1218 	add	a,r5
+   04E7 F8                 1219 	mov	r0,a
+   04E8 C0 05              1220 	push	ar5
+   04EA E6                 1221 	mov	a,@r0
+   04EB 2F                 1222 	add	a,r7
+   04EC FF                 1223 	mov	r7,a
+   04ED 8A 82              1224 	mov	dpl,r2
+   04EF 8B 83              1225 	mov	dph,r3
+   04F1 8C F0              1226 	mov	b,r4
+   04F3 12 07 00           1227 	lcall	__gptrput
+                           1228 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:37: for(i=0,(*Humidity)=0;i<8;i++)
+   04F6 0E                 1229 	inc	r6
+   04F7 D0 05              1230 	pop	ar5
+   04F9 80 D0              1231 	sjmp	00120$
+   04FB                    1232 00123$:
+                           1233 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:42: for(i=0,(*Temperature)=0;i<8;i++)
+   04FB E5 28              1234 	mov	a,_bp
+   04FD 24 FB              1235 	add	a,#0xfb
+   04FF F8                 1236 	mov	r0,a
+   0500 86 02              1237 	mov	ar2,@r0
+   0502 08                 1238 	inc	r0
+   0503 86 03              1239 	mov	ar3,@r0
+   0505 08                 1240 	inc	r0
+   0506 86 04              1241 	mov	ar4,@r0
+   0508 8A 82              1242 	mov	dpl,r2
+   050A 8B 83              1243 	mov	dph,r3
+   050C 8C F0              1244 	mov	b,r4
+   050E E4                 1245 	clr	a
+   050F 12 07 00           1246 	lcall	__gptrput
+   0512 7E 00              1247 	mov	r6,#0x00
+   0514                    1248 00124$:
+   0514 BE 08 00           1249 	cjne	r6,#0x08,00156$
+   0517                    1250 00156$:
+   0517 50 2D              1251 	jnc	00128$
+                           1252 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:44: (*Temperature)*=2;
+   0519 8A 82              1253 	mov	dpl,r2
+   051B 8B 83              1254 	mov	dph,r3
+   051D 8C F0              1255 	mov	b,r4
+   051F 12 07 3B           1256 	lcall	__gptrget
+   0522 25 E0              1257 	add	a,acc
+   0524 FF                 1258 	mov	r7,a
+   0525 8A 82              1259 	mov	dpl,r2
+   0527 8B 83              1260 	mov	dph,r3
+   0529 8C F0              1261 	mov	b,r4
+   052B 12 07 00           1262 	lcall	__gptrput
+                           1263 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:45: (*Temperature)+=readings[i+16];
+   052E 74 10              1264 	mov	a,#0x10
+   0530 2E                 1265 	add	a,r6
+   0531 2D                 1266 	add	a,r5
+   0532 F8                 1267 	mov	r0,a
+   0533 C0 05              1268 	push	ar5
+   0535 E6                 1269 	mov	a,@r0
+   0536 2F                 1270 	add	a,r7
+   0537 FF                 1271 	mov	r7,a
+   0538 8A 82              1272 	mov	dpl,r2
+   053A 8B 83              1273 	mov	dph,r3
+   053C 8C F0              1274 	mov	b,r4
+   053E 12 07 00           1275 	lcall	__gptrput
+                           1276 ;	C:\Users\User\Desktop\HC-05\8051\/DHT11.c:42: for(i=0,(*Temperature)=0;i<8;i++)
+   0541 0E                 1277 	inc	r6
+   0542 D0 05              1278 	pop	ar5
+   0544 80 CE              1279 	sjmp	00124$
+   0546                    1280 00128$:
+   0546 85 28 81           1281 	mov	sp,_bp
+   0549 D0 28              1282 	pop	_bp
+   054B 22                 1283 	ret
+                           1284 ;------------------------------------------------------------
+                           1285 ;Allocation info for local variables in function 'main'
+                           1286 ;------------------------------------------------------------
+                           1287 ;i                         Allocated to registers r2 r3 
+                           1288 ;j                         Allocated to stack - offset 1
+                           1289 ;Humidity                  Allocated to stack - offset 3
+                           1290 ;Temperature               Allocated to stack - offset 4
+                           1291 ;sloc0                     Allocated to stack - offset 7
+                           1292 ;------------------------------------------------------------
+                           1293 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:11: void main(void)
+                           1294 ;	-----------------------------------------
+                           1295 ;	 function main
+                           1296 ;	-----------------------------------------
+   054C                    1297 _main:
+   054C C0 28              1298 	push	_bp
+   054E E5 81              1299 	mov	a,sp
+   0550 F5 28              1300 	mov	_bp,a
+   0552 24 04              1301 	add	a,#0x04
+   0554 F5 81              1302 	mov	sp,a
+                           1303 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:17: IE = 0x90;
+   0556 75 A8 90           1304 	mov	_IE,#0x90
+                           1305 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:18: uart_initialize();
+   0559 12 00 8C           1306 	lcall	_uart_initialize
+                           1307 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:20: while(1)
+   055C                    1308 00117$:
+                           1309 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:22: for(i=0;i<1000;i++){
+   055C 7A 00              1310 	mov	r2,#0x00
+   055E 7B 00              1311 	mov	r3,#0x00
+   0560                    1312 00129$:
+   0560 C3                 1313 	clr	c
+   0561 EA                 1314 	mov	a,r2
+   0562 94 E8              1315 	subb	a,#0xE8
+   0564 EB                 1316 	mov	a,r3
+   0565 64 80              1317 	xrl	a,#0x80
+   0567 94 83              1318 	subb	a,#0x83
+   0569 50 59              1319 	jnc	00132$
+                           1320 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:23: for(j=0;j<150;j++){
+   056B 7C 00              1321 	mov	r4,#0x00
+   056D 7D 00              1322 	mov	r5,#0x00
+   056F                    1323 00125$:
+   056F C3                 1324 	clr	c
+   0570 EC                 1325 	mov	a,r4
+   0571 94 96              1326 	subb	a,#0x96
+   0573 ED                 1327 	mov	a,r5
+   0574 64 80              1328 	xrl	a,#0x80
+   0576 94 80              1329 	subb	a,#0x80
+   0578 50 43              1330 	jnc	00131$
+                           1331 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:24: if(state==1){
+   057A 74 01              1332 	mov	a,#0x01
+   057C B5 08 06           1333 	cjne	a,_state,00192$
+   057F E4                 1334 	clr	a
+   0580 B5 09 02           1335 	cjne	a,(_state + 1),00192$
+   0583 80 02              1336 	sjmp	00193$
+   0585                    1337 00192$:
+   0585 80 25              1338 	sjmp	00104$
+   0587                    1339 00193$:
+                           1340 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:25: A_IB=0;
+   0587 C2 A1              1341 	clr	_P2_1
+                           1342 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:26: A_IA=1;for(i=0;i<30;i++);
+   0589 D2 A0              1343 	setb	_P2_0
+   058B 7E 1E              1344 	mov	r6,#0x1E
+   058D 7F 00              1345 	mov	r7,#0x00
+   058F                    1346 00121$:
+   058F 1E                 1347 	dec	r6
+   0590 BE FF 01           1348 	cjne	r6,#0xff,00194$
+   0593 1F                 1349 	dec	r7
+   0594                    1350 00194$:
+   0594 EE                 1351 	mov	a,r6
+   0595 4F                 1352 	orl	a,r7
+   0596 70 F7              1353 	jnz	00121$
+                           1354 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:27: A_IA=0;for(i=30;i<100;i++);
+   0598 C2 A0              1355 	clr	_P2_0
+   059A 7E 46              1356 	mov	r6,#0x46
+   059C 7F 00              1357 	mov	r7,#0x00
+   059E                    1358 00124$:
+   059E 1E                 1359 	dec	r6
+   059F BE FF 01           1360 	cjne	r6,#0xff,00196$
+   05A2 1F                 1361 	dec	r7
+   05A3                    1362 00196$:
+   05A3 EE                 1363 	mov	a,r6
+   05A4 4F                 1364 	orl	a,r7
+   05A5 70 F7              1365 	jnz	00124$
+   05A7 7A 64              1366 	mov	r2,#0x64
+   05A9 FB                 1367 	mov	r3,a
+   05AA 80 0A              1368 	sjmp	00127$
+   05AC                    1369 00104$:
+                           1370 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:29: else if(state==0){
+   05AC E5 08              1371 	mov	a,_state
+   05AE 45 09              1372 	orl	a,(_state + 1)
+   05B0 70 04              1373 	jnz	00127$
+                           1374 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:30: A_IA=A_IB=0;
+   05B2 C2 A1              1375 	clr	_P2_1
+   05B4 C2 A0              1376 	clr	_P2_0
+   05B6                    1377 00127$:
+                           1378 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:23: for(j=0;j<150;j++){
+   05B6 0C                 1379 	inc	r4
+   05B7 BC 00 B5           1380 	cjne	r4,#0x00,00125$
+   05BA 0D                 1381 	inc	r5
+   05BB 80 B2              1382 	sjmp	00125$
+   05BD                    1383 00131$:
+                           1384 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:22: for(i=0;i<1000;i++){
+   05BD 0A                 1385 	inc	r2
+   05BE BA 00 9F           1386 	cjne	r2,#0x00,00129$
+   05C1 0B                 1387 	inc	r3
+   05C2 80 9C              1388 	sjmp	00129$
+   05C4                    1389 00132$:
+                           1390 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:34: EA = 0;
+   05C4 C2 AF              1391 	clr	_EA
+                           1392 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:35: ES = 0;
+   05C6 C2 AC              1393 	clr	_ES
+                           1394 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:36: DHT11_Read(&Humidity,&Temperature);
+   05C8 E5 28              1395 	mov	a,_bp
+   05CA 24 04              1396 	add	a,#0x04
+   05CC FA                 1397 	mov	r2,a
+   05CD 7B 00              1398 	mov	r3,#0x00
+   05CF 7E 40              1399 	mov	r6,#0x40
+   05D1 E5 28              1400 	mov	a,_bp
+   05D3 24 03              1401 	add	a,#0x03
+   05D5 FF                 1402 	mov	r7,a
+   05D6 7C 00              1403 	mov	r4,#0x00
+   05D8 7D 40              1404 	mov	r5,#0x40
+   05DA C0 02              1405 	push	ar2
+   05DC C0 03              1406 	push	ar3
+   05DE C0 06              1407 	push	ar6
+   05E0 8F 82              1408 	mov	dpl,r7
+   05E2 8C 83              1409 	mov	dph,r4
+   05E4 8D F0              1410 	mov	b,r5
+   05E6 12 04 5D           1411 	lcall	_DHT11_Read
+   05E9 15 81              1412 	dec	sp
+   05EB 15 81              1413 	dec	sp
+   05ED 15 81              1414 	dec	sp
+                           1415 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:37: uart_put_integer(Temperature);
+   05EF E5 28              1416 	mov	a,_bp
+   05F1 24 04              1417 	add	a,#0x04
+   05F3 F8                 1418 	mov	r0,a
+   05F4 86 04              1419 	mov	ar4,@r0
+   05F6 7D 00              1420 	mov	r5,#0x00
+   05F8 8C 82              1421 	mov	dpl,r4
+   05FA 8D 83              1422 	mov	dph,r5
+   05FC 12 03 9E           1423 	lcall	_uart_put_integer
+                           1424 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:38: uart_put_string("\r\n");
+   05FF 90 08 5C           1425 	mov	dptr,#__str_0
+   0602 75 F0 80           1426 	mov	b,#0x80
+   0605 12 00 C6           1427 	lcall	_uart_put_string
+                           1428 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:39: if(state==1){
+   0608 74 01              1429 	mov	a,#0x01
+   060A B5 08 08           1430 	cjne	a,_state,00201$
+   060D E4                 1431 	clr	a
+   060E B5 09 04           1432 	cjne	a,(_state + 1),00201$
+   0611 74 01              1433 	mov	a,#0x01
+   0613 80 01              1434 	sjmp	00202$
+   0615                    1435 00201$:
+   0615 E4                 1436 	clr	a
+   0616                    1437 00202$:
+   0616 FC                 1438 	mov	r4,a
+   0617 60 22              1439 	jz	00109$
+                           1440 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:40: A_IB=0;
+   0619 C2 A1              1441 	clr	_P2_1
+                           1442 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:41: A_IA=1;for(i=0;i<30;i++);
+   061B D2 A0              1443 	setb	_P2_0
+   061D 7D 1E              1444 	mov	r5,#0x1E
+   061F 7E 00              1445 	mov	r6,#0x00
+   0621                    1446 00135$:
+   0621 1D                 1447 	dec	r5
+   0622 BD FF 01           1448 	cjne	r5,#0xff,00204$
+   0625 1E                 1449 	dec	r6
+   0626                    1450 00204$:
+   0626 ED                 1451 	mov	a,r5
+   0627 4E                 1452 	orl	a,r6
+   0628 70 F7              1453 	jnz	00135$
+                           1454 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:42: A_IA=0;for(i=30;i<100;i++);
+   062A C2 A0              1455 	clr	_P2_0
+   062C 7D 46              1456 	mov	r5,#0x46
+   062E 7E 00              1457 	mov	r6,#0x00
+   0630                    1458 00138$:
+   0630 1D                 1459 	dec	r5
+   0631 BD FF 01           1460 	cjne	r5,#0xff,00206$
+   0634 1E                 1461 	dec	r6
+   0635                    1462 00206$:
+   0635 ED                 1463 	mov	a,r5
+   0636 4E                 1464 	orl	a,r6
+   0637 70 F7              1465 	jnz	00138$
+   0639 80 0A              1466 	sjmp	00110$
+   063B                    1467 00109$:
+                           1468 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:44: else if(state==0){
+   063B E5 08              1469 	mov	a,_state
+   063D 45 09              1470 	orl	a,(_state + 1)
+   063F 70 04              1471 	jnz	00110$
+                           1472 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:45: A_IA=A_IB=0;
+   0641 C2 A1              1473 	clr	_P2_1
+   0643 C2 A0              1474 	clr	_P2_0
+   0645                    1475 00110$:
+                           1476 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:47: for(i=0;i<1000;i++){
+   0645 7A 00              1477 	mov	r2,#0x00
+   0647 7B 00              1478 	mov	r3,#0x00
+   0649                    1479 00149$:
+   0649 C3                 1480 	clr	c
+   064A EA                 1481 	mov	a,r2
+   064B 94 E8              1482 	subb	a,#0xE8
+   064D EB                 1483 	mov	a,r3
+   064E 64 80              1484 	xrl	a,#0x80
+   0650 94 83              1485 	subb	a,#0x83
+   0652 50 5A              1486 	jnc	00152$
+                           1487 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:48: for(j=0;j<150;j++){
+   0654 A8 28              1488 	mov	r0,_bp
+   0656 08                 1489 	inc	r0
+   0657 E4                 1490 	clr	a
+   0658 F6                 1491 	mov	@r0,a
+   0659 08                 1492 	inc	r0
+   065A F6                 1493 	mov	@r0,a
+   065B                    1494 00145$:
+   065B A8 28              1495 	mov	r0,_bp
+   065D 08                 1496 	inc	r0
+   065E C3                 1497 	clr	c
+   065F E6                 1498 	mov	a,@r0
+   0660 94 96              1499 	subb	a,#0x96
+   0662 08                 1500 	inc	r0
+   0663 E6                 1501 	mov	a,@r0
+   0664 64 80              1502 	xrl	a,#0x80
+   0666 94 80              1503 	subb	a,#0x80
+   0668 50 3D              1504 	jnc	00151$
+                           1505 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:49: if(state==1){
+   066A EC                 1506 	mov	a,r4
+   066B 60 25              1507 	jz	00114$
+                           1508 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:50: A_IB=0;
+   066D C2 A1              1509 	clr	_P2_1
+                           1510 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:51: A_IA=1;for(i=0;i<30;i++);
+   066F D2 A0              1511 	setb	_P2_0
+   0671 7F 1E              1512 	mov	r7,#0x1E
+   0673 7D 00              1513 	mov	r5,#0x00
+   0675                    1514 00141$:
+   0675 1F                 1515 	dec	r7
+   0676 BF FF 01           1516 	cjne	r7,#0xff,00212$
+   0679 1D                 1517 	dec	r5
+   067A                    1518 00212$:
+   067A EF                 1519 	mov	a,r7
+   067B 4D                 1520 	orl	a,r5
+   067C 70 F7              1521 	jnz	00141$
+                           1522 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:52: A_IA=0;for(i=30;i<100;i++);
+   067E C2 A0              1523 	clr	_P2_0
+   0680 7D 46              1524 	mov	r5,#0x46
+   0682 7E 00              1525 	mov	r6,#0x00
+   0684                    1526 00144$:
+   0684 1D                 1527 	dec	r5
+   0685 BD FF 01           1528 	cjne	r5,#0xff,00214$
+   0688 1E                 1529 	dec	r6
+   0689                    1530 00214$:
+   0689 ED                 1531 	mov	a,r5
+   068A 4E                 1532 	orl	a,r6
+   068B 70 F7              1533 	jnz	00144$
+   068D 7A 64              1534 	mov	r2,#0x64
+   068F FB                 1535 	mov	r3,a
+   0690 80 0A              1536 	sjmp	00147$
+   0692                    1537 00114$:
+                           1538 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:54: else if(state==0){
+   0692 E5 08              1539 	mov	a,_state
+   0694 45 09              1540 	orl	a,(_state + 1)
+   0696 70 04              1541 	jnz	00147$
+                           1542 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:55: A_IA=A_IB=0;
+   0698 C2 A1              1543 	clr	_P2_1
+   069A C2 A0              1544 	clr	_P2_0
+   069C                    1545 00147$:
+                           1546 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:48: for(j=0;j<150;j++){
+   069C A8 28              1547 	mov	r0,_bp
+   069E 08                 1548 	inc	r0
+   069F 06                 1549 	inc	@r0
+   06A0 B6 00 02           1550 	cjne	@r0,#0x00,00217$
+   06A3 08                 1551 	inc	r0
+   06A4 06                 1552 	inc	@r0
+   06A5                    1553 00217$:
+   06A5 80 B4              1554 	sjmp	00145$
+   06A7                    1555 00151$:
+                           1556 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:47: for(i=0;i<1000;i++){
+   06A7 0A                 1557 	inc	r2
+   06A8 BA 00 9E           1558 	cjne	r2,#0x00,00149$
+   06AB 0B                 1559 	inc	r3
+   06AC 80 9B              1560 	sjmp	00149$
+   06AE                    1561 00152$:
+                           1562 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:59: EA = 1;
+   06AE D2 AF              1563 	setb	_EA
+                           1564 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:60: ES = 1;
+   06B0 D2 AC              1565 	setb	_ES
+   06B2 02 05 5C           1566 	ljmp	00117$
+   06B5 85 28 81           1567 	mov	sp,_bp
+   06B8 D0 28              1568 	pop	_bp
+   06BA 22                 1569 	ret
+                           1570 ;------------------------------------------------------------
+                           1571 ;Allocation info for local variables in function 'UART_ISR'
+                           1572 ;------------------------------------------------------------
+                           1573 ;s                         Allocated to registers r2 r3 
+                           1574 ;------------------------------------------------------------
+                           1575 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:65: void UART_ISR(void) __interrupt 4
+                           1576 ;	-----------------------------------------
+                           1577 ;	 function UART_ISR
+                           1578 ;	-----------------------------------------
+   06BB                    1579 _UART_ISR:
+   06BB C0 E0              1580 	push	acc
+   06BD C0 02              1581 	push	ar2
+   06BF C0 03              1582 	push	ar3
+   06C1 C0 D0              1583 	push	psw
+   06C3 75 D0 00           1584 	mov	psw,#0x00
+                           1585 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:68: if(RI == 1)
+                           1586 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:70: RI = 0;
+   06C6 10 98 02           1587 	jbc	_RI,00117$
+   06C9 80 27              1588 	sjmp	00109$
+   06CB                    1589 00117$:
+                           1590 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:71: s = SBUF;
+   06CB AA 99              1591 	mov	r2,_SBUF
+   06CD 7B 00              1592 	mov	r3,#0x00
+                           1593 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:72: SBUF = s;
+   06CF 8A 99              1594 	mov	_SBUF,r2
+                           1595 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:73: if(state==0){
+   06D1 E5 08              1596 	mov	a,_state
+   06D3 45 09              1597 	orl	a,(_state + 1)
+                           1598 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:74: state = 1;
+   06D5 70 07              1599 	jnz	00104$
+   06D7 75 08 01           1600 	mov	_state,#0x01
+   06DA F5 09              1601 	mov	(_state + 1),a
+   06DC 80 19              1602 	sjmp	00111$
+   06DE                    1603 00104$:
+                           1604 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:76: else if(state==1){
+   06DE 74 01              1605 	mov	a,#0x01
+   06E0 B5 08 06           1606 	cjne	a,_state,00119$
+   06E3 E4                 1607 	clr	a
+   06E4 B5 09 02           1608 	cjne	a,(_state + 1),00119$
+   06E7 80 02              1609 	sjmp	00120$
+   06E9                    1610 00119$:
+   06E9 80 0C              1611 	sjmp	00111$
+   06EB                    1612 00120$:
+                           1613 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:77: state = 0;
+   06EB E4                 1614 	clr	a
+   06EC F5 08              1615 	mov	_state,a
+   06EE F5 09              1616 	mov	(_state + 1),a
+   06F0 80 05              1617 	sjmp	00111$
+   06F2                    1618 00109$:
+                           1619 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:80: else if(TI == 1)
+                           1620 ;	C:\Users\User\Desktop\HC-05\8051\hc-05.c:82: TI = 0;
+   06F2 10 99 02           1621 	jbc	_TI,00121$
+   06F5 80 00              1622 	sjmp	00111$
+   06F7                    1623 00121$:
+   06F7                    1624 00111$:
+   06F7 D0 D0              1625 	pop	psw
+   06F9 D0 03              1626 	pop	ar3
+   06FB D0 02              1627 	pop	ar2
+   06FD D0 E0              1628 	pop	acc
+   06FF 32                 1629 	reti
+                           1630 ;	eliminated unneeded push/pop ar0
+                           1631 ;	eliminated unneeded push/pop ar1
+                           1632 ;	eliminated unneeded push/pop dpl
+                           1633 ;	eliminated unneeded push/pop dph
+                           1634 ;	eliminated unneeded push/pop b
+                           1635 	.area CSEG    (CODE)
+                           1636 	.area CONST   (CODE)
+   084B                    1637 _uart_ASCII:
+   084B 30 31 32 33 34 35  1638 	.ascii "0123456789ABCDEF"
+        36 37 38 39 41 42
+        43 44 45 46
+   085B 00                 1639 	.db 0x00
+   085C                    1640 __str_0:
+   085C 0D                 1641 	.db 0x0D
+   085D 0A                 1642 	.db 0x0A
+   085E 00                 1643 	.db 0x00
+                           1644 	.area XINIT   (CODE)
+                           1645 	.area CABS    (ABS,CODE)
