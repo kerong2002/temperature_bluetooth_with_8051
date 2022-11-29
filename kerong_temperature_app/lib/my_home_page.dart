@@ -30,7 +30,11 @@ class _MyHomePageState extends State<MyHomePage> {
   double? percentValue;
   bool _isWatering = false;
   bool fan_open = false;
-
+  void _sendOnMessageToBluetooth() async {
+    connection!.output.add(Uint8List.fromList(utf8.encode("DONE")));
+    await connection!.output.allSent;
+    print('done');
+  }
   void _onDataReceived(Uint8List data) {
     // Allocate buffer for parsed data
     int backspacesCounter = 0;
@@ -85,6 +89,9 @@ class _MyHomePageState extends State<MyHomePage> {
       percentValue = take; // inverse percent
     });
   }
+  // Method to send message,
+  // for turning the Bluetooth device on
+
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +174,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 )
               ),
               onPressed: () async {
-                String text = 'o';
+                _sendOnMessageToBluetooth();
+                String text = 'water';
                 if(fan_open==false){
                   fan_open = true;
                 }
@@ -179,7 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 if (text.isNotEmpty) {
                   try {
                     connection!.output
-                        .add(Uint8List.fromList(utf8.encode(text)));
+                        .add(Uint8List.fromList(utf8.encode("$text\r\n")));
                     await connection!.output.allSent;
                   } finally {
                     Future.delayed(const Duration(seconds: 4), () {
