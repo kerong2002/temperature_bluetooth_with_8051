@@ -4,3 +4,7 @@ Operation video : https://drive.google.com/file/d/1IVqDGmtNTlPPXX7pEds5mgwa2R3JN
 Idea from -> (github-iqfareez soil_humidity)   
 This is my project for MCU(8051)  
 Use flutter bluetooth connect with 8051 to get temperature and control the fan turn on/off.    
+<center class="half">
+    <img src="https://github.com/kerong2002/temperature_bluetooth_with_8051/blob/main/photo/disconnect.jpg" width="200"/><img src="https://github.com/kerong2002/temperature_bluetooth_with_8051/blob/main/photo/temperature.jpg" width="200"/><img src="https://github.com/kerong2002/temperature_bluetooth_with_8051/blob/main/photo/turn_on.jpg" width="200"/> </center>
+1
+2
